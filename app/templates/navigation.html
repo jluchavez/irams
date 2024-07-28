@@ -1,0 +1,128 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!---- Header ----->
+    <link rel="stylesheet" href="../static/header/css/header.css">
+    <script src="../static/header/js/header.js"></script>
+
+    <!---- SideNav ----->
+    <link rel="stylesheet" href="../static/sidenav/css/sidenav.css">
+    <script src="../static/sidenav/js/sidenav.js"></script>
+
+    <!-- <link rel="stylesheet" href="{{ url_for('static', filename='header/css/header.css') }}">
+    <script src="{{ url_for('static', filename='header/js/header.js') }}"></script>
+
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='sidenav/css/sidenav.css') }}">
+    <script src="{{ url_for('static', filename='sidenav/js/sidenav.js') }}"></script> -->
+
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+</head>
+<body>
+    <div class="head-container">
+        <div class="nav-bar">
+            <div class="logo-container">
+                <img src="../static/icon/logo.svg" class="logo">
+                <!-- <img src="{{ url_for('static', filename='icon/logo.svg') }}" class="logo"> -->
+                <div class="text-container">
+                    Intelligent Road Accident Management System for Prescriptive and Vulnerability Modelling Using
+                    Machine Learning Analytics
+                </div>
+            </div>
+            <!-- Navigation Container Inside Main Container -->
+            <div class="nav-container">
+                <div class="navigation">
+                    <a href="#" class="navigation-link">Dashboard</a>
+                    <a href="#" class="navigation-link">WebMap</a>
+                    <a href="#" class="navigation-link">Visualization</a>
+                    <a href="#" class="navigation-link">Report</a>
+                </div>
+
+                <div class="date-containers">
+                    <p>Philippine Standard Time</p>
+                    <div id="datetime"></div>
+                </div>
+            </div>
+        </div>
+        <!-- <div class="side-nav-overlay" onclick="toggleSideNav()"></div> -->
+        <!-- <div class="side-nav" id="sideNav"> -->
+        <div class="sidebar">
+            <div class="logo_details">
+                <i class="bx bxl-audible icon"></i>
+                <div class="logo_name">IRMS</div>
+                <i class="bx bx-menu" id="btn"></i>
+            </div>
+            <ul class="nav-list">
+                <li>
+                    <i class="bx bx-search"></i>
+                    <input type="text" placeholder="Search...">
+                    <span class="tooltip">Search</span>
+                </li>
+                <li>
+                    <a href="">
+                        <i class="bx bx-grid-alt"></i>
+                        <span class="link_name">Dashboard</span>
+                    </a>
+                    <span class="tooltip">Dashboard</span>
+                </li>
+                <li>
+                    <a href="/webmap">
+                        <i class="bx bx-map"></i>
+                        <span class="link_name">Web Map</span>
+                    </a>
+                    <span class="tooltip">Web Map</span>
+                </li>
+                <li>
+                    <a href="/visualization">
+                        <i class="bx bx-pie-chart-alt-2"></i>
+                        <span class="link_name">Visualization</span>
+                    </a>
+                    <span class="tooltip">Visualization</span>
+                </li>
+                <li>
+                    <a href="/report">
+                        <i class="bx bx-folder"></i>
+                        <span class="link_name">Report</span>
+                    </a>
+                    <span class="tooltip">Report</span>
+                </li>
+                <!-- <li>
+                    <i class="bx bx-search"></i>
+                    <input type="text" placeholder="Search...">
+                    <span class="tooltip">Search</span>
+                </li>
+                <li>
+                    <a href="">
+                        <i class="bx bx-grid-alt"></i>
+                        <span class="link_name">Dashboard</span>
+                    </a>
+                    <span class="tooltip">Dashboard</span>
+                </li>
+                <li>
+                    <a href="{{ url_for('webmap.webmap') }}">
+                        <i class="bx bx-map"></i>
+                        <span class="link_name">Web Map</span>
+                    </a>
+                    <span class="tooltip">Web Map</span>
+                </li>
+                <li>
+                    <a href="{{ url_for('visualization.visualization') }}">
+                        <i class="bx bx-pie-chart-alt-2"></i>
+                        <span class="link_name">Visualization</span>
+                    </a>
+                    <span class="tooltip">Visualization</span>
+                </li>
+                <li>
+                    <a href="{{ url_for('report.report') }}">
+                        <i class="bx bx-folder"></i>
+                        <span class="link_name">Report</span>
+                    </a>
+                    <span class="tooltip">Report</span>
+                </li> -->
+            </ul>
+        </div>
+    </div>
+
+</body>
+</html>

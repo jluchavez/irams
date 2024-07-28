@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Road Accidents Visualization</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='webmap/css/webmap.css') }}">
+    <!---- Header ----->
+    <link rel="stylesheet" href="{{ url_for('static', filename='header/css/header.css') }}">
+    <script src="{{ url_for('static', filename='header/js/header.js') }}"></script>
+    <!---- Header ----->
+
+
+    <!---- SideNav ----->
+    <link rel="stylesheet" href="{{ url_for('static', filename='sideNav/css/sidenav.css') }}">
+    <script src="{{ url_for('static', filename='sideNav/js/sidenav.js') }}"></script>
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <!---- SideNav ----->
+
+    <!---- Heat Map ----->
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <!---- Heat Map ----->
+
+    <!-- Leaflet Heatmap Plugin -->
+    <script src="https://cdn.jsdelivr.net/npm/leaflet-heat@0.2.0/dist/leaflet-heat.js"></script>
+    <!-- Leaflet Heatmap Plugin -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.heat/0.2.0/leaflet-heat.js"></script>
+
+    <!-- Leaflet Search Plugin -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css" />
+    <script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
+</head>
+
+<body>
+    <div class="head-container">
+        <div class="nav-bar">
+            <div class="logo-container">
+                <img src="{{ url_for('static', filename='icon/logo4.svg') }}" class="logo">
+                <div class="text-container">
+                    Intelligent Road Accidents for Management System
+                </div>
+            </div>
+            <!-- Navigation Container Inside Main Container -->
+            <div class="nav-container">
+
+                <div class="date-containers">
+                    <div id="datetime"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="sidebar">
+            <div class="logo_details">
+                <!--                <i class="bx bxl-audible icon"></i>-->
+                <div class="logo_name"></div>
+                <i class="bx bx-menu" id="btn"></i>
+            </div>
+            <ul class="nav-list">
+
+                <li>
+                    <a href="{{ url_for('homepage.homepage') }}">
+                        <i class="bx bx-grid-alt"></i>
+                        <span class="link_name">Dashboard</span>
+                    </a>
+                    <span class="tooltip">Dashboard</span>
+                </li>
+                <li>
+                    <a class="active">
+                        <i class="bx bx-map"></i>
+                        <span class="link_name">Web Map</span>
+                    </a>
+                    <span class="tooltip">Web Map</span>
+                </li>
+                <li>
+                    <a href="{{ url_for('visualization.visualization') }}">
+                        <i class="bx bx-pie-chart-alt-2"></i>
+                        <span class="link_name">Visualization</span>
+                    </a>
+                    <span class="tooltip">Visualization</span>
+                </li>
+                <li>
+                    <a href="{{ url_for('report.report') }}">
+                        <i class="bx bx-folder"></i>
+                        <span class="link_name">Report</span>
+                    </a>
+                    <span class="tooltip">Report</span>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="main-container">
+        <div class="details-container">
+            <div class="text-header">
+                <h2>About Urdaneta City</h2>
+                <p class="intro">Urdaneta is a landlocked component city in the coastal province of Pangasinan.
+                    The city has a land area of 98.21 square kilometers or 37.92 square miles which constitutes 1.80% of
+                    Pangasinan's total area.
+                    Its population as determined by the 2020 Census was 144,577. This represented 4.57% of the total
+                    population of Pangasinan province, or 2.73% of the overall population of the Ilocos Region.
+                    Based on these figures, the population density is computed at 1,472 inhabitants per square kilometer
+                    or 3,813 inhabitants per square mile.</p>
+            </div>
+            <div class="text-content">
+                <h2>Prescription</h2>
+                <div class="prescription">
+                    <p>{{ prescription }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="map-container">
+            <div class="map-head">
+                <div class="dropdown-container">
+                    <select id="dropdown-menu" onchange="changeContent()" class="select-input">
+                        <option value="gmap-map">Google Map</option>
+                        <option value="gsat-map">Google Satellite</option>
+                        <option value="topo-map">Topography</option>
+                        <option value="dark-map">Dark Map</option>
+                        <option value="heat-map">Heat Map</option>
+                    </select>
+                </div>
+                <div class="search-container" id="search-container">
+                    <select id="barangayDropdown" class="form-input">
+                        <option value="" selected hidden>Select Barangay</option>
+                        <option value="Anonas">Anonas</option>
+                        <option value="Bactad East">Bactad East</option>
+                        <option value="Bayaoas">Bayaoas</option>
+                        <option value="Bolaoen">Bolaoen</option>
+                        <option value="Cabaruan">Cabaruan</option>
+                        <option value="Cabuloan">Cabuloan</option>
+                        <option value="Camanang">Camanang</option>
+                        <option value="Camantiles">Camantiles</option>
+                        <option value="Casantaan">Casantaan</option>
+                        <option value="Catablan">Catablan</option>
+                        <option value="Cayambanan">Cayambanan</option>
+                        <option value="Consolacion">Consolacion</option>
+                        <option value="Dilan Paurido">Dilan Paurido</option>
+                        <option value="Dr. Pedro T. Orata (Bactad Proper)">Dr. Pedro T. Orata (Bactad Proper)</option>
+                        <option value="Labit Proper">Labit Proper</option>
+                        <option value="Labit West">Labit West</option>
+                        <option value="Mabanogbog">Mabanogbog</option>
+                        <option value="Macalong">Macalong</option>
+                        <option value="Nancalobasaan">Nancalobasaan</option>
+                        <option value="Nancamaliran East">Nancamaliran East</option>
+                        <option value="Nancamaliran West">Nancamaliran West</option>
+                        <option value="Nancayasan">Nancayasan</option>
+                        <option value="Oltama">Oltama</option>
+                        <option value="Palina East">Palina East</option>
+                        <option value="Palina West">Palina West</option>
+                        <option value="Pinmaludpod">Pinmaludpod</option>
+                        <option value="Poblacion">Poblacion</option>
+                        <option value="San Jose">San Jose</option>
+                        <option value="San Vicente">San Vicente</option>
+                        <option value="Santa Lucia">Santa Lucia</option>
+                        <option value="Santo Domingo">Santo Domingo</option>
+                        <option value="Sugcong">Sugcong</option>
+                        <option value="Tipuso">Tipuso</option>
+                        <option value="Tulong">Tulong</option>
+                    </select>
+                    <button onclick="searchByBarangay()" class="form-btn submit">Barangay</button>
+                    <input type="text" id="latitude" placeholder="Latitude" class="form-input" required
+                        autocomplete="off">
+                    <input type="text" id="longitude" placeholder="Longitude" class="form-input" required
+                        autocomplete="off">
+                    <button onclick="searchCoordinates()" class="form-btn submit">Coordinates</button>
+                    <button onclick="refreshMap()" class="form-btn cancel">Reset</button>
+                </div>
+            </div>
+            <div class="map-body">
+                <!-- Content specific to Google Map -->
+                <div id="gmap-map" class="map map-content" onmouseover="mapHover('gmap-map')"
+                    onmouseout="mapHoverOut('gmap-map')">
+                    <div class="coordinates-display"></div>
+                </div>
+                <!-- Content specific to Google Satellite -->
+                <div id="gsat-map" class="map map-content" onmouseover="mapHover('gsat-map')"
+                    onmouseout="mapHoverOut('gsat-map')">
+                    <div class="coordinates-display"></div>
+                </div>
+                <!-- Content specific to Topography -->
+                <div id="topo-map" class="map map-content" onmouseover="mapHover('topo-map')"
+                    onmouseout="mapHoverOut('topo-map')">
+                    <div class="coordinates-display"></div>
+                </div>
+                <!-- Content specific to Dark Map -->
+                <div id="dark-map" class="map map-content" onmouseover="mapHover('dark-map')"
+                    onmouseout="mapHoverOut('dark-map')">
+                    <div class="coordinates-display"></div>
+                </div>
+                <!-- Content specific to Heat Map -->
+                <div id="heat-map" class="map map-content" onmouseover="mapHover('heat-map')"
+                    onmouseout="mapHoverOut('heat-map')">
+                    <div class="coordinates-display"></div>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            var accidentsData1 = {{ accidents_data_1 | tojson }};
+            var accidentsData2 = {{ accidents_data_2 | tojson }};
+            var maps = {};
+            var geojsonLayer = null; // Variable to store GeoJSON layer
+            var geojsonLoaded = false; // Flag to track if GeoJSON has been loaded
+            var currentMarkers = []; // Global variable to store markers for the current barangay search
+            var searchMarker = null; // Variable to store the marker from searchCoordinates
+            var previousMarkerIcon = null; // Variable to store the previous icon of the search marker
+
+            document.addEventListener("DOMContentLoaded", function () {
+                changeContent(); // Initialize map on page load
+            });
+
+            function initializeMap(mapId, mapType) {
+                if (maps[mapId]) {
+                    return;
+                }
+
+                maps[mapId] = L.map(mapId).setView([15.9753, 120.5670], 12);
+                addTileLayer(mapId, mapType);
+                maps[mapId].on('mousemove', function (e) {
+                    showCoordinatesOnHover(e, mapId);
+                });
+
+                // Load barangay boundaries from GeoJSON if not already loaded
+                if (!geojsonLoaded) {
+                    loadBarangayBoundaries(mapId);
+                } else {
+                    if (geojsonLayer) {
+                        geojsonLayer.addTo(maps[mapId]); // Add existing GeoJSON layer to the map
+                    }
+                }
+
+                // Add markers to the map
+                addMarkersToMap(maps[mapId]);
+            }
+
+            // Function to load barangay boundaries from GeoJSON and add to the map
+            function loadBarangayBoundaries(mapId) {
+                var geojsonUrl = '{{ url_for("static", filename="/geojson/urdaneta.geojson") }}';
+
+                fetch(geojsonUrl)
+                    .then(function (response) {
+                        return response.json();
+                    })
+                    .then(function (data) {
+                        geojsonLayer = L.geoJSON(data, {
+                            style: function (feature) {
+                                return {
+                                    color: '#A0C8FF',
+                                    weight: 2,
+                                    opacity: 0.8,
+                                    fillOpacity: 0
+                                };
+                            }
+                        }).addTo(maps[mapId]);
+                    })
+                    .catch(function (error) {
+                        console.error('Error loading barangay boundaries:', error);
+                    });
+            }
+
+            // Function to show longitude and latitude on hover
+            function showCoordinatesOnHover(e, mapId) {
+                var coordinatesDisplay = document.querySelector(`#${mapId} .coordinates-display`);
+                coordinatesDisplay.innerHTML = `Lat: ${e.latlng.lat.toFixed(4)}, Lng: ${e.latlng.lng.toFixed(4)}`;
+                coordinatesDisplay.style.display = 'block';
+            }
+
+            // Function to hide longitude and latitude display
+            function hideCoordinatesOnHover(mapId) {
+                var coordinatesDisplay = document.querySelector(`#${mapId} .coordinates-display`);
+                coordinatesDisplay.style.display = 'none';
+            }
+
+            function refreshMap() {
+                // Clear search-related elements
+                clearSearchMarkers();
+                revertSearchCoordinateMarker();
+                document.getElementById('barangayDropdown').selectedIndex = 0;
+                document.getElementById('latitude').value = '';
+                document.getElementById('longitude').value = '';
+                closeAllPopups(); // Close all pop-ups
+            }
+
+            // Function to close all open popups
+            function closeAllPopups() {
+                Object.keys(maps).forEach(function (mapId) {
+                    maps[mapId].eachLayer(function (layer) {
+                        if (layer instanceof L.Marker && layer.getPopup() && layer.isPopupOpen()) {
+                            layer.closePopup();
+                        }
+                    });
+                });
+            }
+
+            // Function to clear markers from previous search
+            function clearSearchMarkers() {
+                currentMarkers.forEach(marker => {
+                    Object.keys(maps).forEach(function (key) {
+                        maps[key].removeLayer(marker);
+                    });
+                });
+
+                // Clear the array of previous search markers
+                currentMarkers = [];
+            }
+
+            // Function to revert the marker from search coordinates to its original style and remove its popup
+            function revertSearchCoordinateMarker() {
+                if (searchMarker && previousMarkerIcon) {
+                    searchMarker.setIcon(previousMarkerIcon);
+                    searchMarker.closePopup(); // Close the popup
+                    searchMarker = null;
+                    previousMarkerIcon = null;
+                }
+            }
+
+            // Function to get tile layer type based on map ID
+            function getTileType(mapId) {
+                if (mapId === 'gmap-map' || mapId === 'gsat-map') {
+                    return mapId === 'gmap-map' ? 'm' : 's';
+                } else if (mapId === 'topo-map') {
+                    return 'topo';
+                } else if (mapId === 'dark-map') {
+                    return 'dark';
+                }
+            }
+
+            // Function to add markers to the map based on map ID
+            function addMarkersToMap(map) {
+                var accidentMarker = L.divIcon({
+                    html: '<i class="bx bxs-map" style="color: #ffad00; font-size: 24px;"></i>',
+                    className: '',
+                    iconSize: [24, 24],
+                    iconAnchor: [12, 24]
+                });
+
+                var brgyMarker = L.divIcon({
+                    html: '<i class="bx bxs-map" style="color: #6abe45; font-size: 32px;"></i>',
+                    className: '',
+                    iconSize: [32, 32],
+                    iconAnchor: [15, 32]
+                });
+
+                accidentsData1.forEach(function (accident) {
+                    var marker = L.marker([parseFloat(accident['LATITUDE']), parseFloat(accident['LONGITUDE'])], { icon: accidentMarker })
+                        .addTo(map)
+                        .on('click', showDataOnClick);
+                    marker.accidentData = accident;
+                    marker.isAccidentMarker = false;
+                });
+
+                accidentsData2.forEach(function (accident) {
+                    var marker = L.marker([parseFloat(accident['LATITUDE']), parseFloat(accident['LONGITUDE'])], { icon: brgyMarker })
+                        .addTo(map)
+                        .on('click', showDataOnClick);
+                    marker.accidentData = accident;
+                    marker.isAccidentMarker = true;
+                });
+            }
+
+            // Function to show data on click
+            function showDataOnClick(event) {
+                var marker = event.target;
+                var accidentData = marker.accidentData;
+
+                var popupContent = '';
+
+                if (!marker.isAccidentMarker) { // For green markers (accidentsData1)
+                    popupContent =
+                        `<b>ID:</b> ${accidentData['ID']}<br>
+            <b>Barangay:</b> ${accidentData['BARANGAY']}<br>
+            <b>Date Committed:</b> ${accidentData['DATE COMMITTED']}<br>
+            <b>Time Committed:</b> ${accidentData['TIME COMMITTED']}<br>
+            <b>Victims Count:</b> ${accidentData['VICTIMS COUNT']}<br>
+            <b>Vehicles Involved:</b> ${accidentData['VEHICLE KIND']}<br>`;
+                } else { // For red markers (accidentsData2)
+                    popupContent = `<b>Barangay:</b> ${accidentData['BARANGAY']}<br>`;
+                }
+
+                // Define the offset for the popup
+                var popupOptions = {
+                    offset: marker.isAccidentMarker ? L.point(0, 0) : L.point(0, 0) // Adjust these values as needed
+                };
+                // offset: marker.isAccidentMarker ? L.point(3, -2) : L.point(-.25, -5)
+                // Bind the new popup content with the offset
+                marker.unbindPopup(); // Unbind previous popup if any
+                marker.bindPopup(popupContent, popupOptions).openPopup();
+            }
+
+
+            // Add tile layer to the specified map
+            function addTileLayer(mapId, type) {
+                var map = maps[mapId];
+                var url;
+                if (type === 'm' || type === 's') {
+                    url = 'https://mt1.google.com/vt/lyrs=' + type + '&x={x}&y={y}&z={z}';
+                } else if (type === 'topo') {
+                    url = 'https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png';
+                } else if (type === 'dark') {
+                    url = 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png';
+                }
+
+                L.tileLayer(url, {
+                    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+                }).addTo(map);
+            }
+
+            // Function to handle map change
+            function changeContent() {
+                var dropdown = document.getElementById("dropdown-menu");
+                var selectedValue = dropdown.value;
+
+                var mapContainers = document.querySelectorAll(".map-content");
+                mapContainers.forEach(container => {
+                    container.style.display = "none";
+                });
+
+                document.getElementById(selectedValue).style.display = "block";
+
+                var searchContainer = document.getElementById("search-container");
+                if (selectedValue === "heat-map") {
+                    searchContainer.style.display = "none";
+                    createHeatMap(); // Initialize the heatmap
+                } else {
+                    searchContainer.style.display = "flex";
+                    initializeMap(selectedValue, getTileType(selectedValue));
+                }
+
+                // Clear markers from previous search when switching maps
+                clearSearchMarkers();
+                revertSearchCoordinateMarker();
+            }
+
+            // Function to create Heatmap
+            function createHeatMap() {
+                var heatMapContainer = document.getElementById('heat-map');
+                if (heatMapContainer) {
+                    var map = L.map('heat-map').setView([15.9753, 120.5670], 12);
+
+                    // Use Google Map tile layer
+                    var mapType = 'm'; // Assuming 'm' is Google Maps in your getTileType function
+                    var url = 'https://mt1.google.com/vt/lyrs=' + mapType + '&x={x}&y={y}&z={z}';
+
+                    L.tileLayer(url, {
+                        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+                    }).addTo(map);
+
+                    var heatMapData = accidentsData1.concat(accidentsData2).map(function (accident) {
+                        return [parseFloat(accident['LATITUDE']), parseFloat(accident['LONGITUDE'])];
+                    });
+
+                    var heat = L.heatLayer(heatMapData, { radius: 50 }).addTo(map);
+                }
+            }
+
+
+            // Function to handle keyboard shortcuts
+            document.addEventListener('keydown', function (event) {
+                if (event.ctrlKey && event.key === 'c') {
+                    event.preventDefault();
+                    copyCoordinatesToClipboard();
+                }
+            });
+
+            // Function to copy coordinates to clipboard
+            function copyCoordinatesToClipboard() {
+                var activeMapId = getActiveMapId();
+                var coordinatesDisplay = document.querySelector(`#${activeMapId} .coordinates-display`);
+                if (coordinatesDisplay) {
+                    var coordinates = coordinatesDisplay.innerText.trim();
+                    if (coordinates) {
+                        var tempTextArea = document.createElement('textarea');
+                        tempTextArea.value = coordinates;
+                        document.body.appendChild(tempTextArea);
+                        tempTextArea.select();
+                        document.execCommand('copy');
+                        document.body.removeChild(tempTextArea);
+                        alert('Coordinates copied to clipboard: ' + coordinates);
+                    } else {
+                        alert('No coordinates available to copy.');
+                    }
+                }
+            }
+
+            // Function to get the ID of the active map container
+            function getActiveMapId() {
+                var dropdown = document.getElementById('dropdown-menu');
+                var selectedValue = dropdown.value;
+                return selectedValue;
+            }
+
+            // Function to search coordinates
+            function searchCoordinates() {
+                var latitude = parseFloat(document.getElementById('latitude').value);
+                var longitude = parseFloat(document.getElementById('longitude').value);
+
+                if (isNaN(latitude) || isNaN(longitude)) {
+                    alert('Please enter valid coordinates.');
+                    return;
+                }
+
+                // Clear markers from previous search
+                clearSearchMarkers();
+                revertSearchCoordinateMarker();
+
+                var marker = L.marker([latitude, longitude]).addTo(maps['gmap-map']);
+                currentMarkers.push(marker);
+
+                // Find matching marker from accidentsData1 and accidentsData2
+                var matchingMarker = null;
+                Object.keys(maps).forEach(function (mapId) {
+                    maps[mapId].eachLayer(function (layer) {
+                        if (layer instanceof L.Marker && layer.getLatLng().equals(marker.getLatLng())) {
+                            matchingMarker = layer;
+                        }
+                    });
+                });
+
+                if (matchingMarker) {
+                    previousMarkerIcon = matchingMarker.options.icon;
+                    searchMarker = matchingMarker;
+                    var accidentData = matchingMarker.accidentData;
+
+                    var popupContent = `
+                <b>ID:</b> ${accidentData['ID']}<br>
+                <b>Barangay:</b> ${accidentData['BARANGAY']}<br>
+                <b>Date Committed:</b> ${accidentData['DATE COMMITTED']}<br>
+                <b>Time Committed:</b> ${accidentData['TIME COMMITTED']}<br>
+                <b>Victims Count:</b> ${accidentData['VICTIMS COUNT']}<br>
+                <b>Vehicles Involved:</b> ${accidentData['VEHICLE KIND']}
+            `;
+
+                    // Check if accidentsData2 marker is clicked
+                    if (matchingMarker.options.icon.options.html.includes('fill="red"')) {
+                        popupContent = `<b>Barangay:</b> ${accidentData['BARANGAY']}<br>`;
+                    }
+
+                    // Bind new popup content and open
+                    matchingMarker.bindPopup(popupContent).openPopup();
+                } else {
+                    // Open popup for the new search marker
+                    marker.bindPopup('Searched Coordinates').openPopup();
+                }
+
+                // Pan the map to the searched coordinates
+                Object.keys(maps).forEach(function (mapId) {
+                    maps[mapId].setView([latitude, longitude], 15);
+                });
+            }
+
+
+            // Function to revert the marker from search coordinates to its original style
+            function revertSearchCoordinateMarker() {
+                if (searchMarker && previousMarkerIcon) {
+                    searchMarker.setIcon(previousMarkerIcon);
+                    searchMarker.off('click', reopenSearchMarkerPopup); // Remove click handler
+                    searchMarker = null;
+                    previousMarkerIcon = null;
+                }
+            }
+
+            // Function to handle reopening of search marker popup
+            function reopenSearchMarkerPopup() {
+                var popupContent = `
+            <b>Matched Location</b><br>
+            <b>ID:</b> ${this.accidentData['ID']}<br>
+            <b>Barangay:</b> ${this.accidentData['BARANGAY']}<br>
+            <b>Date Committed:</b> ${this.accidentData['DATE COMMITTED']}<br>
+            <b>Time Committed:</b> ${this.accidentData['TIME COMMITTED']}<br>
+            <b>Victims Count:</b> ${this.accidentData['VICTIMS COUNT']}<br>
+            <b>Vehicles Involved:</b> ${this.accidentData['VEHICLE KIND']}
+        `;
+                this.bindPopup(popupContent).openPopup();
+            }
+
+
+            // Function to search by Barangay
+            function searchByBarangay() {
+                var selectedBarangay = document.getElementById('barangayDropdown').value;
+
+                // Check if Barangay is selected
+                if (selectedBarangay === '') {
+                    alert('Choose a Barangay first');
+                    return;
+                }
+
+                fetch(`/webmap/search?barangay=${selectedBarangay}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        // Clear markers from previous search
+                        clearSearchMarkers();
+
+                        // Reset barangayDropdown to default option
+                        document.getElementById('barangayDropdown').selectedIndex = 0;
+
+                        // Add new markers for the current search
+                        data.forEach(function (accident) {
+                            Object.keys(maps).forEach(function (key) {
+                                // Example: Assuming accident object has necessary properties
+                                var marker = L.marker([parseFloat(accident['LATITUDE']), parseFloat(accident['LONGITUDE'])])
+                                    .addTo(maps[key])
+                                    .on('click', showDataOnClick);
+
+                                // Attach accident data to the marker
+                                marker.accidentData = accident;
+
+                                // Determine if the marker should be considered red (accidentsData2)
+                                marker.isAccidentMarker = true; // Adjust this condition based on your logic
+
+                                currentMarkers.push(marker); // Store the marker in currentMarkers array
+                            });
+                        });
+                    })
+                    .catch(error => console.error('Error searching by barangay:', error));
+            }
+
+
+            function clearSearchMarkers() {
+                currentMarkers.forEach(function (marker) {
+                    marker.remove(); // Remove the marker from the map
+                });
+                currentMarkers = []; // Clear the array
+            }
+        </script>
+
+
+</body>
+
+</html>

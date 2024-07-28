@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crime Report Form</title>
+    <!-- Global -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='records/css/records.css') }}">
+    <!-- <script src="{{ url_for('static', filename='report/js/report.js') }}"></script> -->
+
+    <!-- Icons -->
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+
+    <!-- Header -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='header/css/header.css') }}">
+    <script src="{{ url_for('static', filename='header/js/header.js') }}"></script>
+
+    <!-- Sidenav -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='sideNav/css/sidenav.css') }}">
+    <script src="{{ url_for('static', filename='sideNav/js/sidenav.js') }}"></script>
+
+</head>
+
+<body>
+
+    {% if 'user' not in session %}
+    <!-- Login prompt -->
+    <div class="login-prompt">
+        <h3>You must log in to access this page.</h3>
+        <a href="{{ url_for('login.login') }}">Log in</a>
+    </div>
+    {% endif %}
+
+    <div class="head-container">
+        <div class="nav-bar">
+            <div class="logo-container">
+                <img src="{{ url_for('static', filename='icon/logo4.svg') }}" class="logo">
+                <div class="text-container">
+                    Intelligent Road Accidents for Management System
+                </div>
+            </div>
+            <div class="date-containers">
+                <div id="datetime"></div>
+            </div>
+        </div>
+    </div>
+    <div class="sidebar">
+        <div class="logo_details">
+            <div class="logo_name"></div>
+            <i class="bx bx-menu" id="btn"></i>
+        </div>
+        <ul class="nav-list">
+            <li>
+                <a href="{{ url_for('homepage.homepage') }}">
+                    <i class="bx bx-grid-alt"></i>
+                    <span class="link_name">Dashboard</span>
+                </a>
+                <span class="tooltip">Dashboard</span>
+            </li>
+            <li>
+                <a href="{{ url_for('webmap.webmap') }}">
+                    <i class="bx bx-map"></i>
+                    <span class="link_name">Web Map</span>
+                </a>
+                <span class="tooltip">Web Map</span>
+            </li>
+            <li>
+                <a href="{{ url_for('visualization.visualization') }}">
+                    <i class="bx bx-pie-chart-alt-2"></i>
+                    <span class="link_name">Visualization</span>
+                </a>
+                <span class="tooltip">Visualization</span>
+            </li>
+            <li>
+                <a href="{{ url_for('report.report') }}">
+                    <i class="bx bx-folder"></i>
+                    <span class="link_name">Report</span>
+                </a>
+                <span class="tooltip">Report</span>
+            </li>
+            <li>
+                <a class="active">
+                    <i class="bx bx-data"></i>
+                    <span class="link_name">Records</span>
+                </a>
+                <span class="tooltip">Records</span>
+            </li>
+            <li>
+                <!-- <a href="{{ url_for('login.logout') }}">
+                        <i class="bx bx-log-out"></i>
+                        <span class="link_name">Logout</span>
+                    </a>
+                     -->
+                <a>
+                    <form action="{{ url_for('login.logout') }}" method="POST" id="logout-form">
+                        <i class="bx bx-log-out" onclick="document.getElementById('logout-form').submit();"></i>
+                        <span class="link_name">Logout</span>
+                    </form>
+                </a>
+                <!-- <span class="tooltip">Logout</span> -->
+            </li>
+        </ul>
+    </div>
+    <div class="main-container">
+        <div class="records-container">
+            <div class="records-table">
+                <div class="table-heading">
+                    <h2>Records history</h2>
+                    <div class="table-subtitle">
+                        <p>Here's the list of recorded entries.</p>
+                    </div>
+                </div>
+                <div class="table-body">
+                    <table class="table-content">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Barangay</th>
+                                <th>Date Committed</th>
+                                <th>Time Committed</th>
+                                <th>Victims Count</th>
+                                <th>Vehicles Kind</th>
+                                <th>Username</th>
+                                <!--                <th>Delete</th>-->
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for report in crime_reports %}
+                            <tr>
+                                <td>{{ report.id }}</td>
+                                <td>{{ report.barangay }}</td>
+                                <td>{{ report.date_committed }}</td>
+                                <td>{{ report.time_committed }}</td>
+                                <td>{{ report.victims_count }}</td>
+                                <td>{{ report.vehicle_kind }}</td>
+                                <td>{{ report.user.username }}</td>
+                                <!--                    <td>-->
+                                <!--                        <form action="{{ url_for('user.delete_report', report_id=report.id) }}" method="post">-->
+                                <!--                            <button type="submit">Delete</button>-->
+                                <!--                        </form>-->
+                                <!--                    </td>-->
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="users-container">
+            <div class="users-table">
+                <div class="table-heading">
+                    <h2>Users</h2>
+                    <div class="table-subtitle">
+                        <p>Here’s the list of registered users.</p>
+                    </div>
+                </div>
+                <div class="table-body">
+                    <table class="table-content">
+                        <thead>
+                            <tr>
+                                <th>User ID</th>
+                                <th>Username</th>
+                                <th>Email</th>
+                                <!--                <th>Delete</th>-->
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for user in users %}
+                            <tr>
+                                <td>{{ user.id }}</td>
+                                <td>{{ user.username }}</td>
+                                <td>{{ user.email }}</td>
+                                <!--                <td>-->
+                                <!--                    <form action="{{ url_for('user.delete_user', user_id=user.id) }}" method="post">-->
+                                <!--                        <button type="submit">Delete</button>-->
+                                <!--                    </form>-->
+                                <!--                </td>-->
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

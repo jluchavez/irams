@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <style>
+        body {
+            background-color: #f0f0f0;
+            margin: 0; /* Add this line to remove default body margin */
+        }
+
+        .sidenav {
+            height: 100%;
+            width: 0;
+            position: fixed;
+            z-index: 1;
+            top: 0;
+            left: 0;
+            background-color: #6c757d;
+            overflow-x: hidden;
+            transition: 0.5s;
+            padding-top: 60px;
+            border-radius: 0 20px 20px 0;
+            box-shadow: 4px 0px 8px rgba(0,0,0,0.1);
+        }
+
+        #toggle-btn {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            font-size: 20px;
+            cursor: pointer;
+            color: black;
+            z-index: 2;
+            display: block; /* Add this line */
+        }
+        
+
+        .closebtn {
+            position: absolute;
+            top: 0;
+            right: 10px;
+            font-size: 30px;
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+            transition: 0.5s;
+        }
+
+        .sidenav a {
+            color: black;
+            font-size: 18px;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            padding: 10px 20px;
+            transition: 0.5s;
+        }
+
+        .sidenav img {
+            width: 20px;
+            height: 20px;
+            margin-right: 10px;
+            transition: 0.5s;
+        }
+
+        .sidenav a span {
+            opacity: 0;
+            transition: 0.5s;
+            margin-left: -20px;
+            margin-left: 20px; /* Add this line */
+        }
+
+        .sidenav.show {
+            width: 250px;
+        }
+
+        .sidenav.show a span {
+            opacity: 1;
+        }
+
+        .sidenav.show a img {
+            margin-left: 20px;
+        }
+
+        .sidenav a:hover {
+            background-color: #ddd; /* Change this color to whatever you prefer */
+            transition: 0.3s;
+        }
+
+        .sidenav a.active {
+            background-color: #ccc; /* Change this color to whatever you prefer */
+            pointer-events: none; /* Make it not clickable */
+        }
+
+    </style>
+</head>
+
+<body>
+    <div id="toggle-btn" onclick="toggleNav()">☰ &nbsp; &nbsp; Menu</div>
+
+    <div id="mySidenav" class="sidenav">
+        <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">×</a>
+        <a href="#" class="active"><img src="icon/home.png" alt="Home"><span>Home</span></a>
+        <a href="#"><img src="icon/insert.png" alt="Insert"><span>Insert</span></a>
+        <a href="#"><img src="icon/about.png" alt="About"><span>About</span></a>
+    </div>
+
+    <script>
+        function toggleNav() {
+            var nav = document.getElementById("mySidenav");
+            var texts = document.querySelectorAll(".sidenav a span");
+            var menuText = document.getElementById("toggle-btn");
+
+            if (nav.classList.contains("show")) {
+                nav.classList.remove("show");
+                menuText.style.display = "block";
+                texts.forEach(function (text) {
+                    text.style.opacity = '0';
+                });
+            } else {
+                nav.classList.add("show");
+                menuText.style.display = "none";
+                texts.forEach(function (text) {
+                    text.style.opacity = '1';
+                });
+            }
+        }
+
+        function closeNav() {
+            var nav = document.getElementById("mySidenav");
+            var menuText = document.getElementById("toggle-btn");
+            nav.classList.remove("show");
+            menuText.style.display = "block";
+        }
+    </script>
+</body>
+
+</html>

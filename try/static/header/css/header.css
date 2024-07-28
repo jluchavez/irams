@@ -1,0 +1,102 @@
+:root{
+    --color-default:#004f83;
+    --color-second:#0067ac;
+    --color-white:#fff;
+    --color-body:#e4e9f7;
+    --color-light:#e0e0e0;
+  }
+/* Reset default browser styles */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+/* Body style */
+body {
+    margin: 0;
+    font-family: "Poppins", sans-serif;
+}
+
+.logo {
+    height: 65px;
+    width: 65px;
+
+}
+.text-container {
+    width: 600px;
+    font-weight: 600;
+    color: #004f83;
+}
+.logo-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+}
+.navigation {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+}
+.nav-container {
+    display: flex;
+    gap: 2rem;
+    margin-right: 5px;
+}
+
+.navigation-link {
+    text-decoration: none; /* Remove underline */
+    color: #000;
+    padding-bottom: 2px; /* Add some space for the border */
+    border-bottom: 2px solid transparent; /* Transparent border initially */
+    transition: border-bottom-color 0.3s; /* Smooth transition for border color */
+}
+
+.navigation-link:hover {
+    border-bottom-color: #333; /* Change border color on hover */
+}
+/* Navigation Bar Styles */
+.nav-bar {
+    background-color: #ffffff;
+    height: 100px;
+    color: #000000;
+    position: fixed;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    top: 0;
+    overflow: hidden;
+    z-index: 102;
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    /* margin-left: 78px; */
+    min-width: 100vw;
+    justify-content: space-between;
+}
+
+.nav-bar .nav-bar-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: 0 1rem;
+    /* Add padding to the navbar content */
+}
+
+.menu-icon {
+    cursor: pointer;
+    display: inline-block;
+}
+.date-containers {
+    padding: .5rem;
+    border: 1px solid red;
+    color: red;
+    max-width: 200px;
+    font-size: small;
+    text-align: center;
+    border-radius: 10px;
+}
+.date-containers p {
+    font-weight: 600;
+}

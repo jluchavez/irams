@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crime Report Form</title>
+    <link rel="stylesheet" href="../css/styles.css">
+</head>
+<body>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Quicksand:wght@300..700&display=swap');
+/* CSS styles for form layout and inputs */
+body {
+    margin: 0;
+    font-family: "Poppins", sans-serif;
+}
+.container {
+    max-width: 800px; /* Reduce the max-width of the container */
+    margin: 20px auto;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+}
+
+.form-row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    margin-bottom: 10px; /* Reduce the margin between rows */
+}
+
+.form-column {
+    flex: 0 0 calc(50% - 10px); /* Reduce the width of columns */
+    margin-bottom: 10px;
+}
+
+.form-group {
+    margin-bottom: 10px; /* Reduce the margin between form groups */
+}
+
+label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px; /* Reduce the margin between labels and inputs */
+    font-size: 1rem; /* Reduce the font size of labels */
+    color: #555;
+}
+
+input[type="text"],
+input[type="date"],
+select {
+    width: calc(100% - 10px); /* Reduce the width of inputs */
+    padding: 8px; /* Reduce the padding of inputs */
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    font-size: 0.9rem; /* Reduce the font size of inputs */
+}
+
+select {
+    width: 100%;
+}
+
+input[type="submit"],
+input[type="button"] {
+    padding: 10px 20px; /* Adjust padding */
+    font-size: 1rem;
+    margin-top: 10px;
+}
+/* Crime Report Table */
+.crime-container {
+    max-width: 1200px;
+    margin: 20px auto;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+}
+
+#crimeReportTable {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+#crimeReportTable th,
+#crimeReportTable td {
+    padding: 10px;
+    border: 1px solid #ccc;
+    text-align: center;
+}
+
+#crimeReportTable th {
+    background-color: #f2f2f2;
+    font-weight: bold;
+}
+
+#crimeReportTable tbody tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+#crimeReportTable tbody tr:hover {
+    background-color: #e0e0e0;
+}</style>
+
+<div class="container">
+    <form id="crimeReportForm" action="/submit-crime-report" method="post">
+        <fieldset>
+            <legend>Incident Details</legend>
+            <div class="form-row">
+                <div class="form-column">
+                    <div class="form-group">
+                        <label for="dateCommitted">Date Committed:</label>
+                        <input type="date" id="dateCommitted" name="dateCommitted" required>
+                    </div>
+
+                    <div class="form-group">
+                        <!-- <label for="monthCommitted">Month Committed:</label> -->
+                        <input type="text" id="monthCommitted" name="monthCommitted" disabled hidden>
+
+                    </div>
+                    <div class="form-group">
+                        <!-- <label for="dayCommitted">Day Committed:</label> -->
+                        <input type="text" id="dayCommitted" name="dayCommitted" disabled hidden>
+                    </div>
+
+                    <div class="form-group">
+                        <!-- <label for="yearCommitted">Year Committed:</label> -->
+                        <input type="text" id="yearCommitted" name="yearCommitted" disabled hidden>
+                    </div>
+
+                </div>
+
+
+                <div class="form-column">
+
+                    <div class="form-group">
+                        <label for="barangay">Barangay:</label>
+                        <select id="barangay" name="barangay" required>
+                        <option value="">Select a Barangay</option>
+                        <option value="Anonas">Anonas</option>
+                        <option value="Bayaoas">Bayaoas</option>
+                        <option value="Bactad East">Bactad East</option>
+                        <option value="Bolaoen">Bolaoen</option>
+                        <option value="Cabaruan">Cabaruan</option>
+                        <option value="Camantiles">Camantiles</option>
+                        <option value="Camanang">Camanang</option>
+                        <option value="Catablan">Catablan</option>
+                        <option value="Cayambanan">Cayambanan</option>
+                        <option value="Consolacion">Consolacion</option>
+                        <option value="Dilan Paurido">Dilan Paurido</option>
+                        <option value="Dr. Pedro T. Orata (Bactad Proper)">Dr. Pedro T. Orata (Bactad Proper)</option>
+                        <option value="Labit Proper">Labit Proper</option>
+                        <option value="Macalong">Macalong</option>
+                        <option value="Mabanogbog">Mabanogbog</option>
+                        <option value="Nancalobasaan">Nancalobasaan</option>
+                        <option value="Nancamaliran East">Nancamaliran East</option>
+                        <option value="Nancamaliran West">Nancamaliran West</option>
+                        <option value="Nancayasan">Nancayasan</option>
+                        <option value="Palina East">Palina East</option>
+                        <option value="Palina West">Palina West</option>
+                        <option value="Pinmaludpod">Pinmaludpod</option>
+                        <option value="Poblacion">Poblacion</option>
+                        <option value="San Jose">San Jose</option>
+                        <option value="San Vicente">San Vicente</option>
+                        <option value="Santa Lucia">Santa Lucia</option>
+                        <option value="Santo Domingo">Santo Domingo</option>
+                        <option value="Tulong">Tulong</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="time_committed">Time Committed (HH:MM:SS):</label>
+                        <input type="text" id="time_committed" name="time_committed" pattern="[0-9]{2}:[0-9]{2}:[0-9]{2}" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="victimsAge">Victim's Age:</label>
+                        <input type="text" id="victimsAge" name="victimsAge" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="suspectsAge">Suspect's Age:</label>
+                        <input type="text" id="suspectsAge" name="suspectsAge" required>
+                    </div>
+
+                </div>
+
+
+                <div class="form-column">
+
+                    <div class="form-group">
+                        <label for="victimsCount">Victim/s Count:</label>
+                        <input type="text" id="victimsCount" name="victimsCount" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="suspectsCount">Suspect/s Count:</label>
+                        <input type="text" id="suspectsCount" name="suspectsCount" required>
+                    </div>
+
+
+                    <div class="form-group">
+                        <label for="victimsGender">Victim's Gender:</label>
+                        <select id="victimsGender" name="victimsGender" required>
+                            <option value="" disabled selected>Select Gender</option>
+                            <option value="Male">M</option>
+                            <option value="Female">F</option>
+                            <!--  <option value="Other">Other</option> --->
+                        </select>
+                    </div>
+
+
+                    <div class="form-group">
+                        <label for="suspectsGender">Suspect's Gender:</label>
+                        <select id="suspectsGender" name="suspectsGender" required>
+                            <option value="" disabled selected>Select Gender</option>
+                            <option value="Male">M</option>
+                            <option value="Female">F</option>
+                            <!--  <option value="Other">Other</option> --->
+                        </select>
+                    </div>
+
+                </div>
+
+                <div class="form-column">
+                    <div class="form-group">
+                        <label for="vehicleKind">Vehicle Kind:</label>
+                        <input type="text" id="vehicleKind" name="vehicleKind" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="offense">Offense:</label>
+                        <input type="text" id="offense" name="offense" required>
+                    </div>
+
+
+                    <div class="form-group">
+                    <label for="latitude">Latitude:</label>
+                    <input type="text" id="latitude" name="latitude" required>
+                    </div>
+
+                    <div class="form-group">
+                    <label for="longitude">Longitude:</label>
+                    <input type="text" id="longitude" name="longitude" required>
+                    </div>
+                </div>
+
+
+                <div class="form-column">
+
+                    <div class="form-group">
+                        <label for="rainfall">Rainfall Index:</label>
+                        <input type="text" id="rainfall" name="rainfall" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="tMax">Maximum Temperature:</label>
+                        <input type="text" id="tMax" name="tMax" required>
+                    </div>
+
+                    <div class="form-group">
+                    <label for="tMin">Minimum Temperature:</label>
+                    <input type="text" id="tMin" name="tMin" required>
+                    </div>
+
+                    <div class="form-group">
+                    <label for="wind_Speed">Wind Speed:</label>
+                    <input type="text" id="wind_Speed" name="wind_Speed" required>
+                    </div>
+
+                    <div class="form-group">
+                    <label for="wind_Direction">Wind Direction:</label>
+                    <input type="text" id="wind_Direction" name="wind_Direction" required>
+                    </div>
+
+                </div>
+
+
+            </div>
+            <input type="submit" value="Submit">
+            <input type="button" value="Clear" onclick="clearForm()">
+
+
+        </fieldset>
+    </form>
+</div>
+
+
+<div class="crime-container">
+    <h2>Crime Report Data</h2>
+    <table id="crimeReportTable">
+        <thead>
+            <tr>
+                <th>Barangay</th>
+                <th>Date Committed</th>
+                <th>Month Committed</th>
+                <th>DayCommitted</th>
+                <th>Year Committed</th>
+                <th>Time Committed</th>
+                <th>Offense</th>
+                <th>Victim's Age</th>
+                <th>Victim's Gender</th>
+                <th>Suspect's Age</th>
+                <th>Suspect's Gender</th>
+                <th>Victim's Count</th>
+                <th>Suspect's Gender</th>
+                <th>Vehicle Kind</th>
+                <th>Latitude</th>
+                <th>Longitude</th>
+                <th>Rainfall Index</th>
+                <th>Max Temperature</th>
+                <th>Min Temperature</th>
+                <th>Wind Speed</th>
+                <th>Wind Direction</th>
+                <!-- Add more headers for other fields if needed -->
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Data rows will be dynamically added here -->
+        </tbody>
+    </table>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+
+<script>
+    function toggleNav() {
+        var nav = document.getElementById("mySidenav");
+        var texts = document.querySelectorAll(".sidenav a span");
+        var menuText = document.getElementById("toggle-btn");
+
+        if (nav.classList.contains("show")) {
+            nav.classList.remove("show");
+            menuText.style.display = "block";
+            texts.forEach(function (text) {
+                text.style.opacity = '0';
+            });
+        } else {
+            nav.classList.add("show");
+            menuText.style.display = "none";
+            texts.forEach(function (text) {
+                text.style.opacity = '1';
+            });
+        }
+    }
+
+    function closeNav() {
+        var nav = document.getElementById("mySidenav");
+        var menuText = document.getElementById("toggle-btn");
+        nav.classList.remove("show");
+        menuText.style.display = "block";
+    }
+
+
+    function clearForm() {
+        document.querySelectorAll('input[type="text"], input[type="number"], input[type="date"], select').forEach((input) => {
+            input.value = '';
+        });
+    }
+
+    // Get the input elements
+    const dateCommittedInput = document.getElementById('dateCommitted');
+    const monthCommittedInput = document.getElementById('monthCommitted');
+    const dayCommittedInput = document.getElementById('dayCommitted');
+    const yearCommittedInput = document.getElementById('yearCommitted');
+
+    // Add event listener for Date Committed input
+    dateCommittedInput.addEventListener('input', function(event) {
+        // Get the selected date
+        const selectedDate = new Date(event.target.value);
+
+        // Extract month, day, and year from the selected date
+        const month = selectedDate.toLocaleString('default', { month: 'long' });
+        const day = selectedDate.getDate();
+        const year = selectedDate.getFullYear();
+
+        // Update the Month Committed, Day Committed, and Year Committed inputs
+        monthCommittedInput.value = month;
+        dayCommittedInput.value = day;
+        yearCommittedInput.value = year;
+    });
+
+    // Get all input elements
+    const inputs = document.querySelectorAll('input[type="text"], input[type="number"], input[type="date"], select');
+
+    // Add event listener for input
+    inputs.forEach(input => {
+        input.addEventListener('input', function(event) {
+            // Get the input value
+            let inputValue = event.target.value;
+
+            // Apply formatting or constraints based on input field IDs
+            switch (event.target.id) {
+                case 'time_committed':
+                    // Remove any non-numeric characters
+                    inputValue = inputValue.replace(/\D/g, '');
+
+                    // Format the input value (HH:MM:SS)
+                    if (inputValue.length >= 2) {
+                        inputValue = inputValue.slice(0, 2) + ':' + inputValue.slice(2);
+                    }
+                    if (inputValue.length >= 5) {
+                        inputValue = inputValue.slice(0, 5) + ':' + inputValue.slice(5);
+                    }
+                    if (inputValue.length >= 8) {
+                        inputValue = inputValue.slice(0, 8);
+                    }
+                    break;
+                case 'dayCommitted':
+                    // Limit to one or two digits
+                    inputValue = inputValue.replace(/\D/g, '').slice(0, 2);
+                    break;
+                case 'yearCommitted':
+                    // Limit to four digits
+                    inputValue = inputValue.replace(/\D/g, '').slice(0, 4);
+                    break;
+                case 'victimsAge':
+                case 'suspectsAge':
+                    // Limit to one to three digits
+                    inputValue = inputValue.replace(/\D/g, '').slice(0, 3);
+                    break;
+                // Add more cases for additional input fields if needed
+            }
+
+            // Update the input value
+            event.target.value = inputValue;
+        });
+    });
+
+
+    // Get the input elements
+    const numericInputs = document.querySelectorAll('#victimsCount, #suspectsCount');
+
+    // Add event listener for input
+    numericInputs.forEach(input => {
+        input.addEventListener('input', function(event) {
+            // Get the input value
+            let inputValue = event.target.value;
+
+            // Limit input to numbers only and restrict to three digits
+            inputValue = inputValue.replace(/\D/g, '').slice(0, 3);
+
+            // Update the input value
+            event.target.value = inputValue;
+        });
+    });
+
+        // Intercept form submission and send data via AJAX
+        $(document).ready(function() {
+        $('#crimeReportForm').submit(function(event) {
+            event.preventDefault(); // Prevent the form from submitting normally
+
+            // Collect form data
+            var formData = $(this).serialize();
+
+            // Send AJAX request
+            $.ajax({
+                type: 'POST',
+                url: $(this).attr('action'),
+                data: formData,
+                success: function(response) {
+                    // Handle success response
+                    console.log(response);
+                    // Optionally, perform actions after successful submission
+                    alert("Form submitted successfully!");
+                    clearForm(); // Clear the form after submission
+                },
+                error: function(xhr, status, error) {
+                    // Handle error
+                    console.error(error);
+                    // Optionally, display an error message to the user
+                    alert("An error occurred while submitting the form.");
+                }
+            });
+        });
+    });
+
+
+    // Get the Wind Direction input element
+    const windDirectionInput = document.getElementById('wind_Direction');
+
+    // Add event listener for Wind Direction input
+    windDirectionInput.addEventListener('input', function(event) {
+        // Get the input value as a number
+        const inputValue = parseFloat(event.target.value);
+
+        // Check if the input is outside the valid range
+        if (inputValue < 1 || inputValue > 360) {
+            // Show a pop-up message for invalid input
+            alert('Invalid input data. Wind Direction should be between 1 and 360.');
+            // Clear the input value
+            event.target.value = '';
+        }
+    });
+
+
+    // Flag to track if time input is invalid
+    let timeInvalid = false;
+
+    // Add event listener for input
+    inputs.forEach(input => {
+        input.addEventListener('input', function(event) {
+            // Get the input value
+            let inputValue = event.target.value;
+
+            // Apply formatting or constraints based on input field IDs
+            switch (event.target.id) {
+                case 'time_committed':
+                    // Validate time format (HH:MM:SS)
+                    const timeParts = inputValue.split(':');
+                    let isValidTime = true;
+
+                    // Check if there are three parts (hours, minutes, seconds)
+                    if (timeParts.length !== 3) {
+                        isValidTime = false;
+                    } else {
+                        // Convert parts to integers for validation
+                        const hours = parseInt(timeParts[0], 10);
+                        const minutes = parseInt(timeParts[1], 10);
+                        const seconds = parseInt(timeParts[2], 10);
+
+                        // Check validity of hours, minutes, and seconds
+                        if (isNaN(hours) || hours < 0 || hours > 23 ||
+                            isNaN(minutes) || minutes < 0 || minutes > 59 ||
+                            isNaN(seconds) || seconds < 0 || seconds > 59) {
+                            isValidTime = false;
+                        }
+                    }
+
+                    if (!isValidTime) {
+                        // Set flag for invalid time
+                        timeInvalid = true;
+                    } else {
+                        // Clear flag if input becomes valid
+                        timeInvalid = false;
+                    }
+                    break;
+                // Add more cases for additional input fields if needed
+            }
+
+            // Update the input value
+            event.target.value = inputValue;
+        });
+
+        // Add event listener for focusout (when user switches to another input)
+        input.addEventListener('focusout', function(event) {
+            // Check if time input was invalid and user has moved to another field
+            if (timeInvalid) {
+                // Invalid time format, show error message
+                alert('Invalid time input data. Time should be in the format HH:MM:SS, with valid ranges.');
+                event.target.value = ''; // Clear the input value
+                timeInvalid = false; // Reset the flag
+            }
+        });
+    });
+
+
+</script>
+
+
+    <!-- jQuery library -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- PapaParse library for CSV parsing -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
+
+    <script>
+// Function to parse and display CSV data in the table
+function displayCSVData(csvData) {
+    const tableBody = document.querySelector('#crimeReportTable tbody');
+    tableBody.innerHTML = ''; // Clear existing rows
+
+    // Parse CSV data
+    Papa.parse(csvData, {
+        header: true, // Treat the first row as header
+        complete: function(results) {
+            let rows = results.data;
+
+            // Sort rows based on the "Year Committed" column in ascending order
+            rows.sort((a, b) => parseInt(a['Year Committed']) - parseInt(b['Year Committed']));
+
+            // Reverse the sorted array to display older data at the bottom
+            rows = rows.reverse();
+
+            rows.forEach(row => {
+                const newRow = document.createElement('tr');
+                Object.values(row).forEach(value => {
+                    const cell = document.createElement('td');
+                    cell.textContent = value;
+                    newRow.appendChild(cell);
+                });
+                tableBody.appendChild(newRow);
+            });
+        }
+    });
+}
+
+// Fetch CSV data from the server
+fetch('/get_csv_data') // Fetch from the Flask route
+    .then(response => response.text())
+    .then(data => displayCSVData(data))
+    .catch(error => console.error('Error fetching CSV data:', error));
+
+</script>
+
+</body>
+</html>

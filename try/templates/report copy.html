@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crime Report Form</title>
+    <link rel="stylesheet" href="../static/css/report2.css">
+</head>
+<body>
+<div class="nav-bar">
+    <div class="nav-bar-content">
+        <div class="menu-icon" onclick="toggleSideNav()" aria-label="Toggle side navigation">
+            <div class="bar"></div>
+            <div class="bar"></div>
+            <div class="bar"></div>
+        </div>
+        <h2>GSA</h2>
+    </div>
+</div>
+<div class="side-nav-overlay" onclick="toggleSideNav()"></div>
+<div class="side-nav" id="sideNav">
+    <ul>
+        <li><a href="#">Home</a></li>
+        <li><a href="#">About</a></li>
+        <li><a href="#">Services</a></li>
+        <li><a href="#">Contact</a></li>
+    </ul>
+</div>
+<div class="main-container">
+    <div class="form-container">
+        <form id="crimeReportForm" action="/submit-crime-report" onsubmit="submitForm(event)" method="post" class="form-content">
+            <div class="form-heading">
+                <h2>Incident Details</h2>
+                <p>Fill in all the fields</p>
+            </div>
+            <div class="form-row">
+                <div class="form-column">
+                    <!-- <p>Date & Location</p> -->
+                    <div class="form-group">
+                        <label for="dateCommitted" class="form-label">Date Committed</label>
+                        <input type="date" id="dateCommitted" name="dateCommitted" class="form-input" required>
+                    </div>
+                    <div class="form-group">
+                        <!-- <label for="monthCommitted" class="form-label">Month Committed:</label> -->
+                        <input type="number" id="monthCommitted" name="monthCommitted" class="form-input input-month">
+                    </div>
+                    <div class="form-group">
+                        <!-- <label for="dayCommitted" class="form-label">Day Committed:</label> -->
+                        <input type="number" id="dayCommitted" name="dayCommitted" class="form-input input-day">
+                    </div>
+                    <div class="form-group">
+                        <!-- <label for="yearCommitted" class="form-label">Year Committed:</label> -->
+                        <input type="number" id="yearCommitted" name="yearCommitted" class="form-input input-year">
+                    </div>
+                    <div class="form-group">
+                        <label for="barangay" class="form-label">Barangay</label>
+                        <select id="barangay" name="barangay" class="form-input">
+                            <option value="" selected hidden>Select Barangay</option>
+                            <option value="Anonas">Anonas</option>
+                            <option value="Bayaoas">Bayaoas</option>
+                            <option value="Bactad East">Bactad East</option>
+                            <option value="Bolaoen">Bolaoen</option>
+                            <option value="Cabaruan">Cabaruan</option>
+                            <option value="Camantiles">Camantiles</option>
+                            <option value="Camanang">Camanang</option>
+                            <option value="Catablan">Catablan</option>
+                            <option value="Cayambanan">Cayambanan</option>
+                            <option value="Consolacion">Consolacion</option>
+                            <option value="Dilan Paurido">Dilan Paurido</option>
+                            <option value="Dr. Pedro T. Orata (Bactad Proper)">Dr. Pedro T. Orata (Bactad Proper)</option>
+                            <option value="Labit Proper">Labit Proper</option>
+                            <option value="Macalong">Macalong</option>
+                            <option value="Mabanogbog">Mabanogbog</option>
+                            <option value="Nancalobasaan">Nancalobasaan</option>
+                            <option value="Nancamaliran East">Nancamaliran East</option>
+                            <option value="Nancamaliran West">Nancamaliran West</option>
+                            <option value="Nancayasan">Nancayasan</option>
+                            <option value="Palina East">Palina East</option>
+                            <option value="Palina West">Palina West</option>
+                            <option value="Pinmaludpod">Pinmaludpod</option>
+                            <option value="Poblacion">Poblacion</option>
+                            <option value="San Jose">San Jose</option>
+                            <option value="San Vicente">San Vicente</option>
+                            <option value="Santa Lucia">Santa Lucia</option>
+                            <option value="Santo Domingo">Santo Domingo</option>
+                            <option value="Tulong">Tulong</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="time_committed" class="form-label">Time Committed</label>
+                        <input type="text" id="time_committed" name="time_committed" pattern="[0-9]{2}:[0-9]{2}:[0-9]{2}" class="form-input" placeholder="HH:MM:SS" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="vehicleKind" class="form-label">Vehicle Type</label>
+                        <input type="text" id="vehicleKind" name="vehicleKind" class="form-input" placeholder="e.g. Car" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="offense" class="form-label">Offense</label>
+                        <input type="text" id="offense" name="offense" class="form-input" placeholder="e.g. Reckless Imprudence" required>
+                    </div>
+        
+        
+                    <div class="form-group">
+                        <label for="latitude" class="form-label">Latitude</label>
+                        <input type="text" id="latitude" name="latitude" class="form-input" placeholder="e.g. 124.2345" required>
+                    </div>
+        
+                    <div class="form-group">
+                        <label for="longitude" class="form-label">Longitude</label>
+                        <input type="text" id="longitude" name="longitude" class="form-input" placeholder="e.g. 15.25" required>
+                    </div>
+                </div>
+                <div class="form-column">
+                    <div>
+                        <!-- <p>Victim Details</p> -->
+                        <div class="form-group">
+                            <label for="victimsAge" class="form-label">Victim's Age</label>
+                            <input type="text" id="victimsAge" name="victimsAge" class="form-input" placeholder="e.g. 21" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="victimsCount" class="form-label">Victim/s Count</label>
+                            <input type="text" id="victimsCount" name="victimsCount" class="form-input" placeholder="e.g. 1" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="victimsGender" class="form-label">Victim's Gender</label>
+                            <select id="victimsGender" name="victimsGender" class="form-input" required>
+                                <option value="" disabled selected>Select Gender</option>
+                                <option value="Male">M</option>
+                                <option value="Female">F</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div>
+                        <!-- <p>Suspect Details</p> -->
+                        <div class="form-group">
+                            <label for="suspectsAge" class="form-label">Suspect's Age</label>
+                            <input type="text" id="suspectsAge" name="suspectsAge" class="form-input" placeholder="e.g. 21" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="suspectsCount" class="form-label">Suspect/s Count</label>
+                            <input type="text" id="suspectsCount" name="suspectsCount" class="form-input" placeholder="e.g. 1" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="suspectsGender" class="form-label">Suspect's Gender</label>
+                            <select id="suspectsGender" name="suspectsGender" class="form-input" required>
+                                <option value="" disabled selected>Select Gender</option>
+                                <option value="Male">M</option>
+                                <option value="Female">F</option>
+                            </select>
+                        </div>
+                    </div>        
+                </div>
+                <div class="form-column">
+                    <!-- <p>Weather Conditions</p> -->
+                    <div class="form-group">
+                        <label for="rainfall" class="form-label">Rainfall Index</label>
+                        <input type="text" id="rainfall" name="rainfall" class="form-input" placeholder="e.g. 2.4" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="tMax" class="form-label">Max Temperature</label>
+                        <input type="text" id="tMax" name="tMax" class="form-input" placeholder="e.g. 32.2" required>
+                    </div>
+        
+                    <div class="form-group">
+                        <label for="tMin" class="form-label">Min Temperature</label>
+                        <input type="text" id="tMin" name="tMin" class="form-input" placeholder="e.g. 20.5" required>
+                    </div>
+        
+                    <div class="form-group">
+                        <label for="wind_Speed" class="form-label">Wind Speed</label>
+                        <input type="text" id="wind_Speed" name="wind_Speed" class="form-input" placeholder="e.g. 3" required>
+                    </div>
+        
+                    <div class="form-group">
+                        <label for="wind_Direction" class="form-label">Wind Direction</label>
+                        <input type="text" id="wind_Direction" name="wind_Direction" class="form-input" placeholder="e.g. 180" required>
+                    </div>
+                </div>
+            </div>
+            <div class="form-row form-footer">
+                <input type="button" value="Clear" onclick="clearForm()" class="form-btn cancel">
+                <input type="submit" value="Submit" class="form-btn submit">
+            </div>
+        </form>
+    </div>
+    <div class="table-container">
+        <div class="table-heading">
+            <h2>Incident Details</h2>
+            <div class="table-subtitle">
+                <p>Here are the details from the datatable.</p>
+                <div class="search-container">
+                    <select id="barangayDropdown" name="barangay" class="form-input">
+                        <option value="" selected hidden>Select Barangay</option>
+                        <option value="Anonas">Anonas</option>
+                        <option value="Bayaoas">Bayaoas</option>
+                        <option value="Bactad East">Bactad East</option>
+                        <option value="Bolaoen">Bolaoen</option>
+                        <option value="Cabaruan">Cabaruan</option>
+                        <option value="Camantiles">Camantiles</option>
+                        <option value="Camanang">Camanang</option>
+                        <option value="Catablan">Catablan</option>
+                        <option value="Cayambanan">Cayambanan</option>
+                        <option value="Consolacion">Consolacion</option>
+                        <option value="Dilan Paurido">Dilan Paurido</option>
+                        <option value="Dr. Pedro T. Orata (Bactad Proper)">Dr. Pedro T. Orata (Bactad Proper)</option>
+                        <option value="Labit Proper">Labit Proper</option>
+                        <option value="Macalong">Macalong</option>
+                        <option value="Mabanogbog">Mabanogbog</option>
+                        <option value="Nancalobasaan">Nancalobasaan</option>
+                        <option value="Nancamaliran East">Nancamaliran East</option>
+                        <option value="Nancamaliran West">Nancamaliran West</option>
+                        <option value="Nancayasan">Nancayasan</option>
+                        <option value="Palina East">Palina East</option>
+                        <option value="Palina West">Palina West</option>
+                        <option value="Pinmaludpod">Pinmaludpod</option>
+                        <option value="Poblacion">Poblacion</option>
+                        <option value="San Jose">San Jose</option>
+                        <option value="San Vicente">San Vicente</option>
+                        <option value="Santa Lucia">Santa Lucia</option>
+                        <option value="Santo Domingo">Santo Domingo</option>
+                        <option value="Tulong">Tulong</option>
+                    </select>
+                    <button onclick="" class="form-btn">Search</button>
+                </div>
+            </div>
+        </div>
+        <div class="table-body">
+            <table id="crimeReportTable" class="table-content">
+                <thead>
+                    <tr>
+                        <th>Actions</th>
+                        <th>ID</th>
+                        <th>Barangay</th>
+                        <th>Date Committed</th>
+                        <!-- <th>Month Committed</th>
+                        <th>DayCommitted</th>
+                        <th>Year Committed</th> -->
+                        <th>Time Committed</th>
+                        <th>Offense</th>
+                        <!-- <th>Victim's Age</th>
+                        <th>Victim's Gender</th>
+                        <th>Suspect's Age</th>
+                        <th>Suspect's Gender</th> -->
+                        <th>Victim's Count</th>
+                        <!-- <th>Suspect's Gender</th> -->
+                        <th>Vehicle Kind</th>
+                        <!-- <th>Latitude</th>
+                        <th>Longitude</th>
+                        <th>Rainfall Index</th>
+                        <th>Max Temperature</th>
+                        <th>Min Temperature</th>
+                        <th>Wind Speed</th>
+                        <th>Wind Direction</th> -->
+                        <!-- Add more headers for other fields if needed -->
+                    </tr>
+                </thead>
+                <tbody id="tableBody">
+                </tbody>
+            </table>
+        </div>
+        <div class="pagination">
+            <a href="#">&laquo;</a>
+            <a href="#" class="active">1</a>
+            <a href="#">2</a>
+            <a href="#">3</a>
+            <a href="#">4</a>
+            <a href="#">5</a>
+            <a href="#">&raquo;</a>
+        </div>
+    </div>
+</div>
+</body>
+<script src="{{ url_for('static', filename='scripts/report.js') }}"></script>
+</html>

@@ -1,0 +1,140 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Quicksand:wght@300..700&display=swap');
+
+:root {
+    --color-default: #79aceb;
+    --color-second: #89b6ed;
+    --color-white: #fff;
+    --color-light: #f6f8fb;
+    --color-gray-light: #e0e0e0;
+    --color-gray: #fbfbfb;
+    --color-gray-dark: #acafb5;
+    --color-font: #333333;
+    --color-black: #4A4A4A;
+    --color-default-accent: #5b8ec3;
+    /* Darker shade of primary */
+    --color-second-accent: #a1c5f0;
+    /* Lighter tint of secondary */
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    margin: 0;
+    font-family: "Poppins", sans-serif;
+}
+
+h2 {
+    font-weight: 500;
+    font-size: 20px;
+    color: var(--color-black);
+    margin-bottom: 5px;
+}
+
+p {
+    font-size: 12px;
+    color: var(--color-gray-dark);
+}
+
+/* Main Container Styles */
+.main-container {
+    background-color: var(--color-light);
+    border-radius: 28px;
+    margin-top: 78px;
+    margin-left: 78px;
+    margin-right: 16px;
+    padding: 16px;
+    position: relative;
+    /* Add relative positioning to contain absolute positioned elements */
+    display: flex;
+    height: auto;
+    gap: 16px;
+    font-family: "Poppins", sans-serif;
+}
+
+.users-container,
+.records-container {
+    background-color: #fff;
+    border-radius: 12px;
+    padding: 16px;
+    display: flex;
+    flex: 1;
+    overflow-x: auto;
+    height: calc(100vh - 48px - 78px);
+}
+
+.users-table,
+.records-table {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    overflow-x: auto;
+}
+
+.users-container {
+    min-width: 400px;
+    max-width: 400px;
+}
+
+/* .records-container {
+    min-width: 800px;
+
+} */
+
+.table-heading {
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid #ccc;
+}
+
+.table-content th {
+    text-align: left;
+    background-color: var(--color-default);
+    font-size: 12px;
+    font-weight: normal;
+    position: sticky;
+    color: var(--color-white);
+    top: 0;
+    z-index: 1;
+}
+
+.table-content td {
+    padding: 8px 0;
+    border-bottom: 1px solid #ccc;
+}
+
+.table-content td {
+    text-align: left;
+    font-size: 10px;
+    font-weight: normal;
+}
+
+.table-content {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th:nth-child(1),
+td:nth-child(1) {
+    min-width: 75px;
+    /* Adjust the width as needed */
+    text-align: center;
+}
+
+.table-body {
+    overflow: auto;
+    flex: 1;
+    border-bottom: 1px solid #ccc;
+}
+
+
+
+
+
+
+.sidebar li:last-child {
+    margin-top: calc(100vh - 450px);
+    cursor: pointer;
+}

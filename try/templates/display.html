@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crime Report Form</title>
+    <link rel="stylesheet" href="styles.css">
+
+    <style>
+        /* General styles */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            margin: 0;
+            padding: 0;
+            font-size: 10px; /* Base font size */
+        }
+
+        .crime-container {
+            max-width: 1700px; /* Adjust as needed */
+            margin: 20px auto;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+        }
+
+        #crimeReportTable {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        #crimeReportTable th,
+        #crimeReportTable td {
+            padding: 10px;
+            border: 1px solid #ccc;
+            text-align: center;
+        }
+
+        #crimeReportTable th {
+            background-color: #f2f2f2;
+            font-weight: bold;
+        }
+
+        #crimeReportTable tbody tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        #crimeReportTable tbody tr:hover {
+            background-color: #e0e0e0;
+        }
+
+        .action-icons {
+            display: flex;
+            justify-content: space-around;
+        }
+
+        .action-icons img {
+            width: 20px; /* Adjust size as needed */
+            cursor: pointer;
+        }
+
+        /* Empty row style */
+        .empty-row {
+            height: 20px; /* Adjust as needed */
+            background-color: transparent;
+        }
+    </style>
+</head>
+<body>
+
+<div class="crime-container">
+    <h2>Crime Report Data</h2>
+    <table id="crimeReportTable">
+        <thead>
+            <tr>
+                <th>Actions</th> <!-- New header for action icons -->
+                <th>Barangay</th>
+                <th>Date Committed</th>
+                <th>Month Committed</th>
+                <th>Day Committed</th>
+                <th>Year Committed</th>
+                <th>Time Committed</th>
+                <th>Offense</th>
+                <th>Victim's Age</th>
+                <th>Victim's Gender</th>
+                <th>Suspect's Age</th>
+                <th>Suspect's Gender</th>
+                <th>Victim's Count</th>
+                <th>Suspect's Gender</th>
+                <th>Vehicle Kind</th>
+                <th>Latitude</th>
+                <th>Longitude</th>
+                <th>Rainfall Index</th>
+                <th>Max Temperature</th>
+                <th>Min Temperature</th>
+                <th>Wind Speed</th>
+                <th>Wind Direction</th>
+                <!-- Add more headers for other fields if needed -->
+            </tr>
+            <!-- Empty row -->
+
+        </thead>
+        <tbody>
+            <!-- Data rows will be dynamically added here -->
+        </tbody>
+    </table>
+</div>
+
+<!-- jQuery library -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<!-- PapaParse library for CSV parsing -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
+
+<script>
+// Function to parse and display CSV data in the table
+function displayCSVData(csvData) {
+    const tableBody = document.querySelector('#crimeReportTable tbody');
+    tableBody.innerHTML = ''; // Clear existing rows
+
+    let rows = []; // Store original data rows
+
+    // Parse CSV data
+    Papa.parse(csvData, {
+        header: true, // Treat the first row as header
+        complete: function(results) {
+            rows = results.data; // Store original data
+
+            // Sort rows based on the "Year Committed" column in ascending order
+            rows.sort((a, b) => parseInt(a['Year Committed']) - parseInt(b['Year Committed']));
+
+            // Reverse the sorted array to display older data at the bottom
+            rows = rows.reverse();
+
+            // Display only 10 rows
+            const numRowsToShow = Math.min(rows.length, 11); // Changed to 10 rows
+            for (let i = 0; i < numRowsToShow; i++) {
+                const newRow = document.createElement('tr');
+                // Create cell for action icons
+                const actionCell = document.createElement('td');
+                actionCell.className = 'action-icons';
+                const viewIcon = createIcon('{{ url_for('static', filename='icon/crimeTable/view.png') }}', 'View');
+                const updateIcon = createIcon('{{ url_for('static', filename='icon/crimeTable/edit.png') }}', 'Edit');
+                const deleteIcon = createIcon('{{ url_for('static', filename='icon/crimeTable/delete.png') }}', 'Delete');
+                actionCell.appendChild(viewIcon);
+                actionCell.appendChild(updateIcon);
+                actionCell.appendChild(deleteIcon);
+                newRow.appendChild(actionCell);
+
+                // Add other data cells
+                Object.values(rows[i]).forEach(value => {
+                    const cell = document.createElement('td');
+                    cell.textContent = value;
+                    newRow.appendChild(cell);
+                });
+
+                tableBody.appendChild(newRow);
+            }
+        }
+    });
+
+    // Track edited rows
+    let editedRows = {};
+
+    // Function to handle edit action
+    function enterEditMode(row) {
+        const cells = row.querySelectorAll('td:not(.action-icons)');
+
+        cells.forEach(cell => {
+            const input = document.createElement('input');
+            input.type = 'text';
+            input.value = cell.textContent.trim();
+            cell.textContent = '';
+            cell.appendChild(input);
+        });
+
+        // Change icon to 'Save' mode
+        const icons = row.querySelectorAll('.action-icons img');
+        icons.forEach(icon => {
+            if (icon.alt === 'Edit') {
+                icon.src = '{{ url_for('static', filename='icon/crimeTable/save.png') }}';
+                icon.alt = 'Save';
+            }
+        });
+    }
+
+    // Function to handle save action
+function saveChanges(row) {
+    const cells = row.querySelectorAll('td:not(.action-icons)');
+    const id = row.cells[1].textContent; // Assuming "Barangay" is the unique identifier
+
+    cells.forEach(cell => {
+        const input = cell.querySelector('input');
+        cell.textContent = input.value;
+    });
+
+    // Update dataset
+    const editedRow = {};
+    cells.forEach(cell => {
+        const header = cell.parentElement.parentElement.querySelector('th').textContent;
+        editedRow[header] = cell.textContent;
+    });
+
+    // Find and update the edited row in the original data
+    const originalRowIndex = rows.findIndex(item => item['Barangay'] === id);
+    if (originalRowIndex !== -1) {
+        rows[originalRowIndex] = editedRow;
+
+        // Send the edited data to the server
+        fetch('/save_changes', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(editedRow),
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log(data); // Optional: Log the server response
+        })
+        .catch(error => {
+            console.error('Error saving changes:', error);
+            // Optionally handle the error here
+        });
+    }
+
+    // Change icon back to 'Edit' mode
+    const icons = row.querySelectorAll('.action-icons img');
+    icons.forEach(icon => {
+        if (icon.alt === 'Save') {
+            icon.src = '{{ url_for('static', filename='icon/crimeTable/edit.png') }}';
+            icon.alt = 'Edit';
+        }
+    });
+}
+
+
+    // Event delegation for edit/save action
+    document.querySelector('#crimeReportTable tbody').addEventListener('click', event => {
+        const target = event.target;
+        if (target.alt === 'Edit') {
+            const row = target.closest('tr');
+            enterEditMode(row);
+        } else if (target.alt === 'Save') {
+            const row = target.closest('tr');
+            saveChanges(row);
+        }
+    });
+}
+
+// Function to create an icon element
+function createIcon(src, alt) {
+    const icon = document.createElement('img');
+    icon.src = src;
+    icon.alt = alt;
+    return icon;
+}
+
+// Fetch CSV data from the server
+fetch('/get_csv_data') // Fetch from the Flask route
+    .then(response => response.text())
+    .then(data => displayCSVData(data))
+    .catch(error => console.error('Error fetching CSV data:', error));
+
+</script>
+
+</body>
+</html>

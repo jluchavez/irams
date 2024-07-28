@@ -1,0 +1,721 @@
+ var highlightLayer;
+        function highlightFeature(e) {
+            highlightLayer = e.target;
+
+            if (e.target.feature.geometry.type === 'LineString' || e.target.feature.geometry.type === 'MultiLineString') {
+              highlightLayer.setStyle({
+                color: '#ffff00',
+              });
+            } else {
+              highlightLayer.setStyle({
+                fillColor: '#ffff00',
+                fillOpacity: 1
+              });
+            }
+            highlightLayer.openPopup();
+        }
+        var map = L.map('gmap-map', {
+            zoomControl:true, maxZoom:28, minZoom:1
+        }).fitBounds([[15.915832847661784,120.46443777787697],[16.018188463994765,120.63733360381252]]);
+        var hash = new L.Hash(map);
+        map.attributionControl.setPrefix('<a href="https://github.com/tomchadwin/qgis2web" target="_blank">qgis2web</a> &middot; <a href="https://leafletjs.com" title="A JS library for interactive maps">Leaflet</a> &middot; <a href="https://qgis.org">QGIS</a>');
+        var autolinker = new Autolinker({truncate: {length: 30, location: 'smart'}});
+        function removeEmptyRowsFromPopupContent(content, feature) {
+         var tempDiv = document.createElement('div');
+         tempDiv.innerHTML = content;
+         var rows = tempDiv.querySelectorAll('tr');
+         for (var i = 0; i < rows.length; i++) {
+             var td = rows[i].querySelector('td.visible-with-data');
+             var key = td ? td.id : '';
+             if (td && td.classList.contains('visible-with-data') && feature.properties[key] == null) {
+                 rows[i].parentNode.removeChild(rows[i]);
+             }
+         }
+         return tempDiv.innerHTML;
+        }
+        document.querySelector(".leaflet-popup-pane").addEventListener("load", function(event) {
+          var tagName = event.target.tagName,
+            popup = map._popup;
+          // Also check if flag is already set.
+          if (tagName === "IMG" && popup && !popup._updated) {
+            popup._updated = true; // Set flag to prevent looping.
+            popup.update();
+          }
+        }, true);
+        var bounds_group = new L.featureGroup([]);
+        function setBounds() {
+        }
+        map.createPane('pane_GoogleRoad_0');
+        map.getPane('pane_GoogleRoad_0').style.zIndex = 400;
+        var layer_GoogleRoad_0 = L.tileLayer('https://mt1.google.com/vt/lyrs=m&x={x}&y={y}&z={z}', {
+            pane: 'pane_GoogleRoad_0',
+            opacity: 1.0,
+            attribution: '<a href="https://www.google.at/permissions/geoguidelines/attr-guide.html">Map data ©2015 Google</a>',
+            minZoom: 1,
+            maxZoom: 28,
+            minNativeZoom: 0,
+            maxNativeZoom: 20
+        });
+        layer_GoogleRoad_0;
+        map.addLayer(layer_GoogleRoad_0);
+        function pop_Barangaycopy_1(feature, layer) {
+            layer.on({
+                mouseout: function(e) {
+                    for (var i in e.target._eventParents) {
+                        if (typeof e.target._eventParents[i].resetStyle === 'function') {
+                            e.target._eventParents[i].resetStyle(e.target);
+                        }
+                    }
+                    if (typeof layer.closePopup == 'function') {
+                        layer.closePopup();
+                    } else {
+                        layer.eachLayer(function(feature){
+                            feature.closePopup()
+                        });
+                    }
+                },
+                mouseover: highlightFeature,
+            });
+            var popupContent = '<table>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['ID_0'] !== null ? autolinker.link(feature.properties['ID_0'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['ISO'] !== null ? autolinker.link(feature.properties['ISO'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['NAME_0'] !== null ? autolinker.link(feature.properties['NAME_0'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['ID_1'] !== null ? autolinker.link(feature.properties['ID_1'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['NAME_1'] !== null ? autolinker.link(feature.properties['NAME_1'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['ID_2'] !== null ? autolinker.link(feature.properties['ID_2'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['NAME_2'] !== null ? autolinker.link(feature.properties['NAME_2'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['ID_3'] !== null ? autolinker.link(feature.properties['ID_3'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['NAME_3'] !== null ? autolinker.link(feature.properties['NAME_3'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['TYPE_3'] !== null ? autolinker.link(feature.properties['TYPE_3'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['ENGTYPE_3'] !== null ? autolinker.link(feature.properties['ENGTYPE_3'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['NL_NAME_3'] !== null ? autolinker.link(feature.properties['NL_NAME_3'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['VARNAME_3'] !== null ? autolinker.link(feature.properties['VARNAME_3'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['UID'] !== null ? autolinker.link(feature.properties['UID'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+            var popup = layer.getPopup();
+            var content = popup.getContent();
+            var updatedContent = removeEmptyRowsFromPopupContent(content, feature);
+            popup.setContent(updatedContent);
+        }
+
+        function style_Barangaycopy_1_0() {
+            return {
+                pane: 'pane_Barangaycopy_1',
+                opacity: 1,
+                color: 'rgba(237,15,11,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 2.0,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(255,158,23,0.0)',
+                interactive: false,
+            }
+        }
+        map.createPane('pane_Barangaycopy_1');
+        map.getPane('pane_Barangaycopy_1').style.zIndex = 401;
+        map.getPane('pane_Barangaycopy_1').style['mix-blend-mode'] = 'normal';
+        var layer_Barangaycopy_1 = new L.geoJson(json_Barangaycopy_1, {
+            attribution: '',
+            interactive: false,
+            dataVar: 'json_Barangaycopy_1',
+            layerName: 'layer_Barangaycopy_1',
+            pane: 'pane_Barangaycopy_1',
+            onEachFeature: pop_Barangaycopy_1,
+            style: style_Barangaycopy_1_0,
+        });
+        bounds_group.addLayer(layer_Barangaycopy_1);
+        map.addLayer(layer_Barangaycopy_1);
+        function pop_20192023updatedcoordinates_2(feature, layer) {
+            layer.on({
+                mouseout: function(e) {
+                    for (var i in e.target._eventParents) {
+                        if (typeof e.target._eventParents[i].resetStyle === 'function') {
+                            e.target._eventParents[i].resetStyle(e.target);
+                        }
+                    }
+                    if (typeof layer.closePopup == 'function') {
+                        layer.closePopup();
+                    } else {
+                        layer.eachLayer(function(feature){
+                            feature.closePopup()
+                        });
+                    }
+                },
+                mouseover: highlightFeature,
+            });
+            var popupContent = '<table>\
+                    <tr>\
+                        <th scope="row">BARANGAY</th>\
+                        <td>' + (feature.properties['BARANGAY'] !== null ? autolinker.link(feature.properties['BARANGAY'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">DATE COMMITTED</th>\
+                        <td>' + (feature.properties['DATE COMMITTED'] !== null ? autolinker.link(feature.properties['DATE COMMITTED'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">TIME COMMITTED</th>\
+                        <td>' + (feature.properties['TIME COMMITTED'] !== null ? autolinker.link(feature.properties['TIME COMMITTED'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">OFFENSE</th>\
+                        <td>' + (feature.properties['OFFENSE'] !== null ? autolinker.link(feature.properties['OFFENSE'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">VICTIMS COUNT</th>\
+                        <td>' + (feature.properties['VICTIMS COUNT'] !== null ? autolinker.link(feature.properties['VICTIMS COUNT'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">VEHICLE KIND</th>\
+                        <td>' + (feature.properties['VEHICLE KIND'] !== null ? autolinker.link(feature.properties['VEHICLE KIND'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+            var popup = layer.getPopup();
+            var content = popup.getContent();
+            var updatedContent = removeEmptyRowsFromPopupContent(content, feature);
+            popup.setContent(updatedContent);
+        }
+
+        function style_20192023updatedcoordinates_2_0(feature) {
+            switch(String(feature.properties['BARANGAY'])) {
+                case 'Anonas':
+                    return {
+                pane: 'pane_20192023updatedcoordinates_2',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(113,236,232,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Bactad East':
+                    return {
+                pane: 'pane_20192023updatedcoordinates_2',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(115,235,207,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Bayaoas':
+                    return {
+                pane: 'pane_20192023updatedcoordinates_2',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(210,132,87,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Bolaoen':
+                    return {
+                pane: 'pane_20192023updatedcoordinates_2',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(68,38,240,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Cabaruan':
+                    return {
+                pane: 'pane_20192023updatedcoordinates_2',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(182,215,16,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Cabuloan':
+                    return {
+                pane: 'pane_20192023updatedcoordinates_2',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(202,117,171,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Camanang':
+                    return {
+                pane: 'pane_20192023updatedcoordinates_2',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(47,91,238,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Camantiles':
+                    return {
+                pane: 'pane_20192023updatedcoordinates_2',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(212,23,105,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Catablan':
+                    return {
+                pane: 'pane_20192023updatedcoordinates_2',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(105,221,69,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Cayambanan':
+                    return {
+                pane: 'pane_20192023updatedcoordinates_2',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(112,212,35,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Consolacion':
+                    return {
+                pane: 'pane_20192023updatedcoordinates_2',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(15,229,136,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Dilan Paurido':
+                    return {
+                pane: 'pane_20192023updatedcoordinates_2',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(226,128,151,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Dr. Pedro T. Orata (Bactad Proper)':
+                    return {
+                pane: 'pane_20192023updatedcoordinates_2',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(39,120,226,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Labit Proper':
+                    return {
+                pane: 'pane_20192023updatedcoordinates_2',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(119,61,227,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Mabanogbog':
+                    return {
+                pane: 'pane_20192023updatedcoordinates_2',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(190,70,226,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Macalong':
+                    return {
+                pane: 'pane_20192023updatedcoordinates_2',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(94,225,142,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Nancalobasaan':
+                    return {
+                pane: 'pane_20192023updatedcoordinates_2',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(231,24,197,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Nancamaliran East':
+                    return {
+                pane: 'pane_20192023updatedcoordinates_2',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(252,187,161,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Nancamaliran West':
+                    return {
+                pane: 'pane_20192023updatedcoordinates_2',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(216,210,28,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Nancayasan':
+                    return {
+                pane: 'pane_20192023updatedcoordinates_2',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(207,99,77,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Palina East':
+                    return {
+                pane: 'pane_20192023updatedcoordinates_2',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(225,97,229,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Palina West':
+                    return {
+                pane: 'pane_20192023updatedcoordinates_2',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(163,223,59,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Pinmaludpod':
+                    return {
+                pane: 'pane_20192023updatedcoordinates_2',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(152,85,204,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Poblacion':
+                    return {
+                pane: 'pane_20192023updatedcoordinates_2',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(104,177,220,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'San Jose':
+                    return {
+                pane: 'pane_20192023updatedcoordinates_2',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(226,44,50,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'San Vicente':
+                    return {
+                pane: 'pane_20192023updatedcoordinates_2',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(81,236,76,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Santa Lucia':
+                    return {
+                pane: 'pane_20192023updatedcoordinates_2',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(233,210,132,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Santo Domingo':
+                    return {
+                pane: 'pane_20192023updatedcoordinates_2',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(232,144,30,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Tulong':
+                    return {
+                pane: 'pane_20192023updatedcoordinates_2',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(68,76,215,1.0)',
+                interactive: true,
+            }
+                    break;
+                default:
+                    return {
+                pane: 'pane_20192023updatedcoordinates_2',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(134,235,151,1.0)',
+                interactive: true,
+            }
+                    break;
+            }
+        }
+        map.createPane('pane_20192023updatedcoordinates_2');
+        map.getPane('pane_20192023updatedcoordinates_2').style.zIndex = 402;
+        map.getPane('pane_20192023updatedcoordinates_2').style['mix-blend-mode'] = 'normal';
+        var layer_20192023updatedcoordinates_2 = new L.geoJson(json_20192023updatedcoordinates_2, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_20192023updatedcoordinates_2',
+            layerName: 'layer_20192023updatedcoordinates_2',
+            pane: 'pane_20192023updatedcoordinates_2',
+            onEachFeature: pop_20192023updatedcoordinates_2,
+            pointToLayer: function (feature, latlng) {
+                var context = {
+                    feature: feature,
+                    variables: {}
+                };
+                return L.circleMarker(latlng, style_20192023updatedcoordinates_2_0(feature));
+            },
+        });
+        bounds_group.addLayer(layer_20192023updatedcoordinates_2);
+        map.addLayer(layer_20192023updatedcoordinates_2);
+        setBounds();
+        map.addControl(new L.Control.Search({
+            layer: layer_20192023updatedcoordinates_2,
+            initial: false,
+            hideMarkerOnCollapse: true,
+            propertyName: 'BARANGAY'}));
+        document.getElementsByClassName('search-button')[0].className +=
+         ' fa fa-binoculars';

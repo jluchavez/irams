@@ -1,0 +1,484 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Quicksand:wght@300..700&display=swap');
+:root{
+    --color-default:#004f83;
+    --color-second:#0067ac;
+    --color-white:#fff;
+    --color-body:#e4e9f7;
+    --color-light:#e0e0e0;
+  }
+/* Reset default browser styles */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+/* Body style */
+body {
+    margin: 0;
+    font-family: "Poppins", sans-serif;
+}
+
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    /* Adjust opacity and color as needed */
+    z-index: 99;
+    /* Ensure overlay is behind side nav */
+    display: none;
+    /* Initially hidden */
+}
+
+
+
+/* Main Container Styles */
+.main-container {
+    position: relative;
+    /* Add relative positioning to contain absolute positioned elements */
+    display: flex;
+    height: auto;
+    margin: 1rem;
+    margin-top: calc(100px + 1rem);
+    margin-left: calc(78px + 1rem);
+    z-index: 98;
+}
+
+/* Container Styles */
+.form-container,
+.popup-container,
+.table-container {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+}
+
+/* Form Container */
+.form-container {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    height: calc(100vh - 100px - 1rem - 20px);
+    min-width: 35%;
+}
+
+/* Form Content Styles */
+.form-content {
+    padding: 20px;
+    width: 100%;
+    position: absolute;
+    /* Position the content absolutely within the container */
+    top: 0;
+    /* Stick at the top */
+    left: 0;
+    /* Ensure content starts from the left edge */
+    right: 0;
+    /* Ensure content ends at the right edge */
+    bottom: 0;
+    /* Stick at the bottom */
+    overflow-y: auto;
+    /* Add scrollbar if content overflows */
+}
+
+/* Table Container */
+.table-container {
+    position: relative;
+    margin-left: 1rem;
+    overflow: auto;
+    width: 100%;
+    min-width: 50%;
+    height: calc(100vh - 100px - 1rem - 20px);
+    /* Adjusted height */
+    display: flex;
+    /* Change to flex container */
+    flex-direction: column;
+    /* Stack children vertically */
+}
+
+
+/* Content Styles */
+.form-content,
+.table-content {
+    width: 100%;
+    overflow: auto;
+}
+
+/* Form Row and Column Styles */
+.form-row {
+    display: flex;
+    padding-top: 1rem;
+    flex-wrap: wrap;
+    /* Allow form rows to wrap */
+}
+
+.form-row.form-footer {
+    padding-top: 0;
+}
+
+.form-column {
+    flex: 1;
+    margin-right: 15px;
+    /* Adjust the spacing as needed */
+    margin-bottom: 15px;
+    /* Add bottom margin to create space between rows */
+}
+
+.form-column:last-child {
+    margin-right: 0;
+}
+
+/* Form Group Styles */
+.form-group {
+    width: 100%;
+    /* Ensure form groups take full width */
+    margin-bottom: 15px;
+}
+
+/* Form Label and Input Styles */
+.form-label {
+    display: block;
+    margin-bottom: 5px;
+    font-size: 11px;
+    color: #5c5c5c;
+}
+
+.form-input,
+.select-input {
+    width: 100%;
+    height: 35px;
+    padding: 8px;
+    border: 1px solid #ddd;
+    color: #999;
+    border-radius: 4px;
+    font-size: 12px;
+}
+
+.form-input.input-month,
+.form-input.input-day,
+.form-input.input-year {
+    display: none;
+}
+
+.form-input.dropdown {
+    width: 100px;
+}
+
+.select-input {
+    appearance: none;
+    background: url('data:image/svg+xml;utf8,<svg fill="#000000" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/><path d="M0 0h24v24H0z" fill="none"/></svg>') no-repeat;
+    background-position-x: calc(100% - 10px);
+    background-position-y: 50%;
+}
+
+.form-input:focus {
+    outline: none;
+    border-color: var(--color-default);
+}
+
+.form-input::placeholder {
+    color: #999;
+    /* Change to your desired color */
+}
+
+/* Form Button Styles */
+.form-footer {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+}
+
+.form-btn {
+    color: white;
+    border: none;
+    cursor: pointer;
+    height: 35px;
+    padding: 10px 15px;
+    font-size: 1rem;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+    font-size: 12px;
+}
+
+.form-btn.submit {
+    background-color: var(--color-default);
+}
+
+.form-btn.cancel {
+    background-color: transparent;
+    margin-right: 10px;
+    color: #999;
+}
+
+/* Hover effect for submit button */
+.form-btn.submit:hover {
+    background-color: var(--color-second);
+    /* Change the color on hover */
+}
+
+/* Hover effect for cancel button */
+.form-btn.cancel:hover {
+    color: #666;
+    /* Change the text color on hover */
+}
+
+/* Form Row Paragraph Styles */
+.form-row p {
+    font-size: 14px;
+    margin-bottom: 1rem;
+}
+
+/* Form Heading Styles */
+.table-heading,
+.popup-heading,
+.form-heading {
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid #ccc;
+}
+
+.table-subtitle {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.popup-heading p,
+.table-heading p,
+.form-heading p {
+    font-size: 12px;
+    color: #999;
+}
+
+h2 {
+    margin-bottom: 5px;
+}
+
+h2 {
+    font-size: 22px;
+}
+
+/* Table Body Styles */
+.table-body {
+    overflow-y: auto;
+    /* Enable scrolling for the table body */
+    flex: 1;
+    /* Allow the table body to grow and fill the remaining space */
+    border-bottom: 1px solid #ccc;
+}
+
+/* Table Content Styles */
+.table-content {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.table-content th,
+.table-content td {
+    padding: 8px;
+    border-bottom: 1px solid #ddd;
+}
+
+.table-content th {
+    text-align: left;
+    background-color: #f2f2f2;
+    font-size: 14px;
+    font-weight: normal;
+    position: sticky;
+    top: 0;
+    z-index: 1;
+}
+
+.table-content td {
+    text-align: left;
+    font-size: 12px;
+    font-weight: normal;
+}
+th:nth-child(1),
+td:nth-child(1) {
+    min-width: 75px; /* Adjust the width as needed */
+    text-align: center;
+}
+
+.action-icons img {
+    margin-right: 10px; /* Adjust margin as needed */
+}
+.action-icons img:nth-child(2) {
+    margin-right: 0px;
+}
+.pagination {
+    margin-top: 1rem;
+    /* Push pagination to the bottom */
+    display: flex;
+    justify-content: flex-end;
+    /* Align items to the end (right) */
+    width: auto;
+
+}
+
+.pagination-btns {
+    display: flex;
+    justify-content: flex-end;
+    align-items: end;
+}
+.pagination .ellipsis{
+    color: #999;
+}
+.pagination button {
+    /* Add styles for pagination links */
+    /* You may need to adjust these styles to fit your design */
+    color: #999;
+    display: inline-flex;
+    text-decoration: none;
+    transition: background-color .3s;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    cursor: pointer;
+
+    height: 35px;
+    /* Adjust height as needed */
+    width: 35px;
+    justify-content: center;
+    /* Center horizontally */
+    align-items: center;
+    /* Center vertically */
+    margin: 0 2.5px 0 2.5px;
+    /* Add space between pagination links */
+}
+
+.pagination button.active {
+    background-color: var(--color-second);
+    color: white;
+    border: 1px solid var(--color-second);
+}
+
+.pagination button:hover:not(.active) {
+    background-color: #ddd;
+}
+
+.pagination button:first-child {
+    margin-left: 0;
+    /* Remove left margin from the first link */
+}
+
+.pagination button:last-child {
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+}
+
+.daterange-container {
+    display: flex;
+}
+
+.daterange-group {
+    margin-right: 5px;
+}
+
+/* .group-2 {
+    display: flex;
+    justify-content: space-between;
+} */
+
+.table-container .form-input {
+    width: auto;
+    height: 35px;
+}
+
+.table-subheading {
+    margin: 8px 0 8px 0;
+}
+
+/* Modal styles */
+#overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+    display: none;
+}
+
+.popup-container {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #fff;
+    z-index: 1000;
+    display: none;
+}
+
+/* The Close Button */
+.close {
+    position: absolute;
+    color: #aaaaaa;
+    top: 0;
+    right: 0;
+    font-size: 28px;
+    font-weight: bold;
+    padding: 15px;
+  }
+  
+  .close:hover,
+  .close:focus {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+  }
+
+  .popup-content {
+    display: flex;
+    flex-direction: column;
+    max-height: 400px; /* Set the maximum height */
+    overflow-y: auto; /* Add vertical scrollbar */
+}
+.popup-footer {
+    border-top: 1px solid #ccc;
+    padding-top: 1rem;
+    display: flex;
+    justify-content: flex-end;
+}
+.row-container {
+    display: flex;
+    gap: 20px; /* Adjust the gap between rows */
+    flex-wrap: wrap; /* Allow rows to wrap */
+}
+
+.column-container {
+    display: flex;
+    flex: 1; /* Each column container will grow to fill available space */
+    flex-direction: column;
+}
+
+.section {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 10px;
+    margin: 10px 0 10px 0;
+    width: 500px;
+    flex: 1; /* Each section will grow to fill available space */
+}
+
+.section p {
+    margin-bottom: 5px;
+    font-size: 14px; /* Adjust font size */
+    color: #333; /* Adjust text color */
+}
+
+.form-label {
+    margin-bottom: 5px;
+    font-size: 12px; /* Adjust font size */
+}
+
+.form-input {
+    width: 100%; /* Make input fields fill their container */
+}
+input[type="date"],input[type="time"],
+select {
+    cursor: pointer;
+}
